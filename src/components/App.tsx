@@ -549,7 +549,7 @@ class App extends React.Component<AppProps, AppState> {
       this.scene.getNonDeletedElements(),
       this.state,
     );
-    const { renderTopRightUI, renderCustomStats } = this.props;
+    const { renderTopRightUI, renderCustomStats, renderLibrary } = this.props;
 
     return (
       <div
@@ -594,6 +594,7 @@ class App extends React.Component<AppProps, AppState> {
                         })
                       }
                       langCode={getLanguage().code}
+                      renderLibrary={renderLibrary}
                       renderTopRightUI={renderTopRightUI}
                       renderCustomStats={renderCustomStats}
                       renderCustomSidebar={this.props.renderSidebar}

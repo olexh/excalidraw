@@ -11,7 +11,7 @@ The change should be grouped under one of the below section and must contain PR 
 Please add the latest change on the top under the correct section.
 -->
 
-## Unreleased
+## 1.0.0 (2023-02-22)
 
 ### Features
 
@@ -31,6 +31,45 @@ For more details refer to the [docs](https://docs.excalidraw.com)
 
 - The optional parameter `refreshDimensions` in [`restoreElements`](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/api/utils/restore#restoreelements) has been removed and can be enabled via `opts`
 
+## Excalidraw Library
+
+**_This section lists the updates made to the excalidraw library and will not affect the integration._**
+
+### Features
+
+- Bind text to container if double clicked on filled shape or stroke [#6250](https://github.com/excalidraw/excalidraw/pull/6250)
+
+- Make repair and refreshDimensions configurable in restoreElements [#6238](https://github.com/excalidraw/excalidraw/pull/6238)
+
+- Show error message when not connected to internet while collabo… [#6165](https://github.com/excalidraw/excalidraw/pull/6165)
+
+- Shortcut for clearCanvas confirmDialog [#6114](https://github.com/excalidraw/excalidraw/pull/6114)
+
+- Disable canvas smoothing (antialiasing) for right-angled elements [#6186](https://github.com/excalidraw/excalidraw/pull/6186)Co-authored-by: Ignacio Cuadra <67276174+ignacio-cuadra@users.noreply.github.com>
+
+### Fixes
+
+- Indenting via `tab` clashing with IME compositor [#6258](https://github.com/excalidraw/excalidraw/pull/6258)
+
+- Improve text wrapping inside rhombus and more fixes [#6265](https://github.com/excalidraw/excalidraw/pull/6265)
+
+- Improve text wrapping in ellipse and alignment [#6172](https://github.com/excalidraw/excalidraw/pull/6172)
+
+- Don't allow blank space in collab name [#6211](https://github.com/excalidraw/excalidraw/pull/6211)
+
+- Docker build architecture:linux/amd64 error occur on linux/arm64 instance [#6197](https://github.com/excalidraw/excalidraw/pull/6197)
+
+- Sort bound text elements to fix text duplication z-index error [#5130](https://github.com/excalidraw/excalidraw/pull/5130)
+
+- Hide welcome screen on mobile once user interacts [#6185](https://github.com/excalidraw/excalidraw/pull/6185)
+
+- Edit link in docs [#6182](https://github.com/excalidraw/excalidraw/pull/6182)
+
+###  Refactor
+
+- Make the example React app reusable without duplication [#6188](https://github.com/excalidraw/excalidraw/pull/6188)
+
+---
 ## 0.14.2 (2023-02-01)
 
 ### Features

@@ -306,6 +306,7 @@ export interface ExcalidrawProps {
     appState: AppState,
   ) => JSX.Element | null;
   langCode?: Language["code"];
+  renderLibrary?: boolean;
   viewModeEnabled?: boolean;
   zenModeEnabled?: boolean;
   gridModeEnabled?: boolean;

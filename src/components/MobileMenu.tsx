@@ -24,6 +24,7 @@ import { useTunnels } from "./context/tunnels";
 type MobileMenuProps = {
   appState: AppState;
   actionManager: ActionManager;
+  renderLibrary?: boolean;
   renderJSONExportDialog: () => React.ReactNode;
   renderImageExportDialog: () => React.ReactNode;
   setAppState: React.Component<any, AppState>["setState"];
@@ -55,6 +56,7 @@ export const MobileMenu = ({
   canvas,
   onImageAction,
   renderTopRightUI,
+  renderLibrary,
   renderCustomStats,
   renderSidebars,
   device,
@@ -87,7 +89,7 @@ export const MobileMenu = ({
                 </Island>
                 {renderTopRightUI && renderTopRightUI(true, appState)}
                 <div className="mobile-misc-tools-container">
-                  {!appState.viewModeEnabled && (
+                  {!appState.viewModeEnabled && renderLibrary && (
                     <LibraryButton
                       appState={appState}
                       setAppState={setAppState}
