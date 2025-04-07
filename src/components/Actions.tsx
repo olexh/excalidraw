@@ -13,7 +13,7 @@ import {
   hasStrokeWidth,
   hasText,
 } from "../scene";
-import { SHAPES } from "../shapes";
+import { SHAPES, ACCESSABLE } from "../shapes";
 import { AppState, Zoom } from "../types";
 import {
   capitalizeString,
@@ -89,10 +89,10 @@ export const SelectedShapeActions = ({
           targetElements.some((element) => hasStrokeColor(element.type))) &&
           renderAction("changeStrokeColor")}
       </div>
-      {showChangeBackgroundIcons && (
+      {/*{showChangeBackgroundIcons && (
         <div>{renderAction("changeBackgroundColor")}</div>
-      )}
-      {showFillIcons && renderAction("changeFillStyle")}
+      )}*/}
+      {/*{showFillIcons && renderAction("changeFillStyle")}*/}
 
       {(hasStrokeWidth(appState.activeTool.type) ||
         targetElements.some((element) => hasStrokeWidth(element.type))) &&
@@ -120,7 +120,7 @@ export const SelectedShapeActions = ({
         <>
           {renderAction("changeFontSize")}
 
-          {renderAction("changeFontFamily")}
+          {/*{renderAction("changeFontFamily")}*/}
 
           {renderAction("changeTextAlign")}
         </>
@@ -135,7 +135,7 @@ export const SelectedShapeActions = ({
 
       {renderAction("changeOpacity")}
 
-      <fieldset>
+      {/*<fieldset>
         <legend>{t("labels.layers")}</legend>
         <div className="buttonList">
           {renderAction("sendToBack")}
@@ -143,9 +143,9 @@ export const SelectedShapeActions = ({
           {renderAction("bringToFront")}
           {renderAction("bringForward")}
         </div>
-      </fieldset>
+      </fieldset>*/}
 
-      {targetElements.length > 1 && !isSingleElementBoundContainer && (
+      {/*{targetElements.length > 1 && !isSingleElementBoundContainer && (
         <fieldset>
           <legend>{t("labels.align")}</legend>
           <div className="buttonList">
@@ -168,7 +168,7 @@ export const SelectedShapeActions = ({
             )}
             {targetElements.length > 2 &&
               renderAction("distributeHorizontally")}
-            {/* breaks the row ˇˇ */}
+             breaks the row ˇˇ
             <div style={{ flexBasis: "100%", height: 0 }} />
             <div
               style={{
@@ -186,16 +186,15 @@ export const SelectedShapeActions = ({
             </div>
           </div>
         </fieldset>
-      )}
+      )}*/}
       {!isEditing && targetElements.length > 0 && (
         <fieldset>
           <legend>{t("labels.actions")}</legend>
           <div className="buttonList">
-            {!device.isMobile && renderAction("duplicateSelection")}
-            {!device.isMobile && renderAction("deleteSelectedElements")}
-            {renderAction("group")}
-            {renderAction("ungroup")}
-            {showLinkIcon && renderAction("hyperlink")}
+            {/*{!device.isMobile && renderAction("duplicateSelection")}*/}
+            {renderAction("deleteSelectedElements")}
+            {/*{renderAction("group")}*/}
+            {/*{renderAction("ungroup")}*/}
           </div>
         </fieldset>
       )}
@@ -217,57 +216,59 @@ export const ShapesSwitcher = ({
   appState: AppState;
 }) => (
   <>
-    {SHAPES.map(({ value, icon, key, numericKey, fillable }, index) => {
-      const label = t(`toolBar.${value}`);
-      const letter =
-        key && capitalizeString(typeof key === "string" ? key : key[0]);
-      const shortcut = letter
-        ? `${letter} ${t("helpDialog.or")} ${numericKey}`
-        : `${numericKey}`;
-      return (
-        <ToolButton
-          className={clsx("Shape", { fillable })}
-          key={value}
-          type="radio"
-          icon={icon}
-          checked={activeTool.type === value}
-          name="editor-current-shape"
-          title={`${capitalizeString(label)} — ${shortcut}`}
-          keyBindingLabel={numericKey || letter}
-          aria-label={capitalizeString(label)}
-          aria-keyshortcuts={shortcut}
-          data-testid={`toolbar-${value}`}
-          onPointerDown={({ pointerType }) => {
-            if (!appState.penDetected && pointerType === "pen") {
-              setAppState({
-                penDetected: true,
-                penMode: true,
+    {SHAPES.filter((s) => ACCESSABLE.includes(s.value)).map(
+      ({ value, icon, key, numericKey, fillable }, index) => {
+        const label = t(`toolBar.${value}`);
+        const letter =
+          key && capitalizeString(typeof key === "string" ? key : key[0]);
+        const shortcut = letter
+          ? `${letter} ${t("helpDialog.or")} ${numericKey}`
+          : `${numericKey}`;
+        return (
+          <ToolButton
+            className={clsx("Shape", { fillable })}
+            key={value}
+            type="radio"
+            icon={icon}
+            checked={activeTool.type === value}
+            name="editor-current-shape"
+            title={`${capitalizeString(label)} — ${shortcut}`}
+            keyBindingLabel={numericKey || letter}
+            aria-label={capitalizeString(label)}
+            aria-keyshortcuts={shortcut}
+            data-testid={`toolbar-${value}`}
+            onPointerDown={({ pointerType }) => {
+              if (!appState.penDetected && pointerType === "pen") {
+                setAppState({
+                  penDetected: true,
+                  penMode: true,
+                });
+              }
+            }}
+            onChange={({ pointerType }) => {
+              if (appState.activeTool.type !== value) {
+                trackEvent("toolbar", value, "ui");
+              }
+              const nextActiveTool = updateActiveTool(appState, {
+                type: value,
               });
-            }
-          }}
-          onChange={({ pointerType }) => {
-            if (appState.activeTool.type !== value) {
-              trackEvent("toolbar", value, "ui");
-            }
-            const nextActiveTool = updateActiveTool(appState, {
-              type: value,
-            });
-            setAppState({
-              activeTool: nextActiveTool,
-              multiElement: null,
-              selectedElementIds: {},
-            });
-            setCursorForShape(canvas, {
-              ...appState,
-              activeTool: nextActiveTool,
-            });
-            if (value === "image") {
-              onImageAction({ pointerType });
-            }
-          }}
-        />
-      );
-    })}
+              setAppState({
+                activeTool: nextActiveTool,
+                multiElement: null,
+                selectedElementIds: {},
+              });
+              setCursorForShape(canvas, {
+                ...appState,
+                activeTool: nextActiveTool,
+              });
+              if (value === "image") {
+                onImageAction({ pointerType });
+              }
+            }}
+          />
+        );
+      },
+    )}
   </>
 );
 

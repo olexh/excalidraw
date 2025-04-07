@@ -11,6 +11,7 @@ export type SidebarProps<P = {}> = {
   docked?: boolean;
   initialDockedState?: boolean;
   dockable?: boolean;
+  placement?: "right" | "bottom";
   className?: string;
 } & P;
 

@@ -1,5 +1,5 @@
 import rough from "roughjs/bin/rough";
-import { NonDeletedExcalidrawElement } from "../element/types";
+import {ExcalidrawElement, NonDeletedExcalidrawElement} from "../element/types";
 import { getCommonBounds } from "../element/bounds";
 import { renderScene, renderSceneToSvg } from "../renderer/renderScene";
 import { distance } from "../utils";
@@ -22,9 +22,11 @@ export const exportToCanvas = async (
     exportBackground,
     exportPadding = DEFAULT_EXPORT_PADDING,
     viewBackgroundColor,
+    elementBounds = undefined,
   }: {
     exportBackground: boolean;
     exportPadding?: number;
+    elementBounds?: ExcalidrawElement;
     viewBackgroundColor: string;
   },
   createCanvas: (
@@ -37,7 +39,7 @@ export const exportToCanvas = async (
     return { canvas, scale: appState.exportScale };
   },
 ) => {
-  const [minX, minY, width, height] = getCanvasSize(elements, exportPadding);
+  const [minX, minY, width, height] = getCanvasSize(elements, exportPadding, elementBounds);
 
   const { canvas, scale = 1 } = createCanvas(width, height);
 
@@ -176,8 +178,9 @@ export const exportToSvg = async (
 const getCanvasSize = (
   elements: readonly NonDeletedExcalidrawElement[],
   exportPadding: number,
+  elementBounds?: ExcalidrawElement,
 ): [number, number, number, number] => {
-  const [minX, minY, maxX, maxY] = getCommonBounds(elements);
+  const [minX, minY, maxX, maxY] = getCommonBounds(elements, elementBounds);
   const width = distance(minX, maxX) + exportPadding * 2;
   const height = distance(minY, maxY) + exportPadding + exportPadding;
 

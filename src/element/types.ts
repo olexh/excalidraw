@@ -74,10 +74,6 @@ export type ExcalidrawRectangleElement = _ExcalidrawElementBase & {
   type: "rectangle";
 };
 
-export type ExcalidrawDiamondElement = _ExcalidrawElementBase & {
-  type: "diamond";
-};
-
 export type ExcalidrawEllipseElement = _ExcalidrawElementBase & {
   type: "ellipse";
 };
@@ -103,7 +99,6 @@ export type InitializedExcalidrawImageElement = MarkNonNullable<
 export type ExcalidrawGenericElement =
   | ExcalidrawSelectionElement
   | ExcalidrawRectangleElement
-  | ExcalidrawDiamondElement
   | ExcalidrawEllipseElement;
 
 /**
@@ -139,14 +134,12 @@ export type ExcalidrawTextElement = _ExcalidrawElementBase &
 
 export type ExcalidrawBindableElement =
   | ExcalidrawRectangleElement
-  | ExcalidrawDiamondElement
   | ExcalidrawEllipseElement
   | ExcalidrawTextElement
   | ExcalidrawImageElement;
 
 export type ExcalidrawTextContainer =
   | ExcalidrawRectangleElement
-  | ExcalidrawDiamondElement
   | ExcalidrawEllipseElement
   | ExcalidrawImageElement
   | ExcalidrawArrowElement;

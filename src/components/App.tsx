@@ -549,7 +549,7 @@ class App extends React.Component<AppProps, AppState> {
       this.scene.getNonDeletedElements(),
       this.state,
     );
-    const { renderTopRightUI, renderCustomStats, renderLibrary } = this.props;
+    const { renderTopLeftUI, renderCustomStats, renderLibrary } = this.props;
 
     return (
       <div
@@ -586,6 +586,7 @@ class App extends React.Component<AppProps, AppState> {
                       onLockToggle={this.toggleLock}
                       onPenModeToggle={this.togglePenMode}
                       onHandToolToggle={this.onHandToolToggle}
+                      toggleMenu={this.toggleMenu}
                       onInsertElements={(elements) =>
                         this.addElementsFromPasteOrLibrary({
                           elements,
@@ -595,9 +596,11 @@ class App extends React.Component<AppProps, AppState> {
                       }
                       langCode={getLanguage().code}
                       renderLibrary={renderLibrary}
-                      renderTopRightUI={renderTopRightUI}
+                      renderTopLeftUI={renderTopLeftUI}
                       renderCustomStats={renderCustomStats}
                       renderCustomSidebar={this.props.renderSidebar}
+                      renderCustomBottombar={this.props.renderBottombar}
+                      renderCustomDialog={this.props.renderCustomDialog}
                       showExitZenModeBtn={
                         typeof this.props?.zenModeEnabled === "undefined" &&
                         this.state.zenModeEnabled
@@ -637,14 +640,14 @@ class App extends React.Component<AppProps, AppState> {
                         closable={this.state.toast.closable}
                       />
                     )}
-                    {this.state.contextMenu && (
-                      <ContextMenu
-                        items={this.state.contextMenu.items}
-                        top={this.state.contextMenu.top}
-                        left={this.state.contextMenu.left}
-                        actionManager={this.actionManager}
-                      />
-                    )}
+                    {/*{this.state.contextMenu && (*/}
+                    {/*  <ContextMenu*/}
+                    {/*    items={this.state.contextMenu.items}*/}
+                    {/*    top={this.state.contextMenu.top}*/}
+                    {/*    left={this.state.contextMenu.left}*/}
+                    {/*    actionManager={this.actionManager}*/}
+                    {/*  />*/}
+                    {/*)}*/}
                     <main>{this.renderCanvas()}</main>
                   </ExcalidrawActionManagerContext.Provider>
                 </ExcalidrawElementsContext.Provider>{" "}
@@ -1934,7 +1937,7 @@ class App extends React.Component<AppProps, AppState> {
    * @returns whether the menu was toggled on or off
    */
   public toggleMenu = (
-    type: "library" | "customSidebar",
+    type: "library" | "customSidebar" | "customBottombar",
     force?: boolean,
   ): boolean => {
     if (type === "customSidebar" && !this.props.renderSidebar) {
@@ -1944,7 +1947,11 @@ class App extends React.Component<AppProps, AppState> {
       return false;
     }
 
-    if (type === "library" || type === "customSidebar") {
+    if (
+      type === "library" ||
+      type === "customSidebar" ||
+      type === "customBottombar"
+    ) {
       let nextValue;
       if (force === undefined) {
         nextValue = this.state.openSidebar === type ? null : type;
@@ -3498,15 +3505,6 @@ class App extends React.Component<AppProps, AppState> {
     if (this.state.activeTool.type === "text") {
       this.handleTextOnPointerDown(event, pointerDownState);
       return;
-    } else if (
-      this.state.activeTool.type === "arrow" ||
-      this.state.activeTool.type === "line"
-    ) {
-      this.handleLinearElementOnPointerDown(
-        event,
-        this.state.activeTool.type,
-        pointerDownState,
-      );
     } else if (this.state.activeTool.type === "image") {
       // reset image preview on pointerdown
       setCursor(this.canvas, CURSOR_TYPE.CROSSHAIR);
@@ -3545,6 +3543,7 @@ class App extends React.Component<AppProps, AppState> {
       this.state.activeTool.type !== "hand"
     ) {
       this.createGenericElementOnPointerDown(
+        // @ts-ignore
         this.state.activeTool.type,
         pointerDownState,
       );
@@ -4459,22 +4458,7 @@ class App extends React.Component<AppProps, AppState> {
       // to ensure we don't create a 2-point arrow by mistake when
       // user clicks mouse in a way that it moves a tiny bit (thus
       // triggering pointermove)
-      if (
-        !pointerDownState.drag.hasOccurred &&
-        (this.state.activeTool.type === "arrow" ||
-          this.state.activeTool.type === "line")
-      ) {
-        if (
-          distance2d(
-            pointerCoords.x,
-            pointerCoords.y,
-            pointerDownState.origin.x,
-            pointerDownState.origin.y,
-          ) < DRAGGING_THRESHOLD
-        ) {
-          return;
-        }
-      }
+
       if (pointerDownState.resize.isResizing) {
         pointerDownState.lastCoords.x = pointerCoords.x;
         pointerDownState.lastCoords.y = pointerCoords.y;

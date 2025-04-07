@@ -1,16 +1,16 @@
 import {
+  forwardRef,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
-  forwardRef,
 } from "react";
 import { Island } from ".././Island";
 import { atom, useAtom } from "jotai";
 import { jotaiScope } from "../../jotai";
 import {
-  SidebarPropsContext,
   SidebarProps,
+  SidebarPropsContext,
   SidebarPropsContextValue,
 } from "./common";
 
@@ -42,6 +42,7 @@ export const Sidebar = Object.assign(
         initialDockedState = docked,
         dockable = true,
         className,
+        placement = "right",
         __isInternal,
       }: SidebarProps<{
         // NOTE sidebars we use internally inside the editor must have this flag set.
@@ -130,6 +131,7 @@ export const Sidebar = Object.assign(
         <Island
           className={clsx(
             "layer-ui__sidebar",
+            placement,
             { "layer-ui__sidebar--docked": isDockedFallback },
             className,
           )}

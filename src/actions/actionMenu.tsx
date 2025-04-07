@@ -39,10 +39,6 @@ export const actionToggleEditMenu = register({
   }),
   PanelComponent: ({ elements, appState, updateData }) => (
     <ToolButton
-      visible={showSelectedShapeActions(
-        appState,
-        getNonDeletedElements(elements),
-      )}
       type="button"
       icon={palette}
       aria-label={t("buttons.edit")}

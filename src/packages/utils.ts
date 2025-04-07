@@ -36,8 +36,10 @@ export const exportToCanvas = ({
   maxWidthOrHeight,
   getDimensions,
   exportPadding,
+  elementBounds,
 }: ExportOpts & {
   exportPadding?: number;
+  elementBounds?: ExcalidrawElement;
 }) => {
   const { elements: restoredElements, appState: restoredAppState } = restore(
     { elements, appState },
@@ -49,7 +51,7 @@ export const exportToCanvas = ({
     getNonDeletedElements(restoredElements),
     { ...restoredAppState, offsetTop: 0, offsetLeft: 0, width: 0, height: 0 },
     files || {},
-    { exportBackground, exportPadding, viewBackgroundColor },
+    { exportBackground, exportPadding, elementBounds, viewBackgroundColor },
     (width: number, height: number) => {
       const canvas = document.createElement("canvas");
 
@@ -91,6 +93,7 @@ export const exportToBlob = async (
     mimeType?: string;
     quality?: number;
     exportPadding?: number;
+    elementBounds?: ExcalidrawElement;
   },
 ): Promise<Blob> => {
   let { mimeType = MIME_TYPES.png, quality } = opts;

@@ -51,6 +51,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
+              ignoreDiagnostics: [2322],
               transpileOnly: true,
               configFile: path.resolve(__dirname, "../tsconfig.prod.json"),
             },

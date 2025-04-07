@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { InitializeApp } from "../../components/InitializeApp";
 import App from "../../components/App";
 import { isShallowEqual } from "../../utils";
@@ -23,9 +23,11 @@ const ExcalidrawBase = (props: ExcalidrawProps) => {
     excalidrawRef,
     isCollaborating = false,
     onPointerUpdate,
-    renderTopRightUI,
+    renderTopLeftUI,
     renderLibrary,
     renderSidebar,
+    renderBottombar,
+    renderCustomDialog,
     langCode = defaultLang.code,
     viewModeEnabled,
     zenModeEnabled,
@@ -96,7 +98,7 @@ const ExcalidrawBase = (props: ExcalidrawProps) => {
           excalidrawRef={excalidrawRef}
           isCollaborating={isCollaborating}
           onPointerUpdate={onPointerUpdate}
-          renderTopRightUI={renderTopRightUI}
+          renderTopLeftUI={renderTopLeftUI}
           renderLibrary={renderLibrary}
           langCode={langCode}
           viewModeEnabled={viewModeEnabled}
@@ -117,6 +119,8 @@ const ExcalidrawBase = (props: ExcalidrawProps) => {
           onPointerDown={onPointerDown}
           onScrollChange={onScrollChange}
           renderSidebar={renderSidebar}
+          renderBottombar={renderBottombar}
+          renderCustomDialog={renderCustomDialog}
         >
           {children}
         </App>
@@ -229,6 +233,8 @@ export {
   newElementWith,
   bumpVersion,
 } from "../../element/mutateElement";
+
+export { newTextElement } from "../../element/newElement";
 
 export {
   parseLibraryTokensFromUrl,

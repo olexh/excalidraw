@@ -269,15 +269,16 @@
   }
 
   .App-menu_top {
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr auto;
     grid-gap: 2rem;
-    align-items: flex-start;
+    align-items: center;
     cursor: default;
     pointer-events: none !important;
+    margin-bottom: 24px;
 
     @media (min-width: 1536px) {
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 3rem;
+      grid-template-columns: 1fr auto;
+      grid-gap: 2rem;
     }
   }
 
@@ -564,6 +565,20 @@
     .library-button {
       border: 0;
     }
+  }
+
+  .mobile-top-section {
+    width: 100%;
+  }
+
+  .mobile-top-stack {
+    grid-template-columns: 1fr auto;
+    grid-gap: 2rem;
+    align-items: center;
+  }
+
+  .top-left-stack {
+    //width: 100%;
   }
 
   .App-toolbar--mobile {

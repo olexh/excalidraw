@@ -36,12 +36,12 @@ const getHints = ({
   if (isEraserActive(appState)) {
     return t("hints.eraserRevert");
   }
-  if (activeTool.type === "arrow" || activeTool.type === "line") {
+  /*if (activeTool.type === "arrow" || activeTool.type === "line") {
     if (!multiMode) {
       return t("hints.linearElement");
     }
     return t("hints.linearElementMulti");
-  }
+  }*/
 
   if (activeTool.type === "freedraw") {
     return t("hints.freeDraw");

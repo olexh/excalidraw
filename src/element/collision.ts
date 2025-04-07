@@ -18,7 +18,6 @@ import {
   ExcalidrawBindableElement,
   ExcalidrawElement,
   ExcalidrawRectangleElement,
-  ExcalidrawDiamondElement,
   ExcalidrawTextElement,
   ExcalidrawEllipseElement,
   NonDeleted,
@@ -165,7 +164,7 @@ export const maxBindingGap = (
   elementHeight: number,
 ): number => {
   // Aligns diamonds with rectangles
-  const shapeRatio = element.type === "diamond" ? 1 / Math.sqrt(2) : 1;
+  const shapeRatio = 1;
   const smallerDimension = shapeRatio * Math.min(elementWidth, elementHeight);
   // We make the bindable boundary bigger for bigger elements
   return Math.max(16, Math.min(0.25 * smallerDimension, 32));
@@ -183,7 +182,6 @@ const hitTestPointAgainstElement = (args: HitTestArgs): boolean => {
     case "rectangle":
     case "image":
     case "text":
-    case "diamond":
     case "ellipse":
       const distance = distanceToBindableElement(args.element, args.point);
       return args.check(distance, args.threshold);
@@ -219,8 +217,6 @@ export const distanceToBindableElement = (
     case "image":
     case "text":
       return distanceToRectangle(element, point);
-    case "diamond":
-      return distanceToDiamond(element, point);
     case "ellipse":
       return distanceToEllipse(element, point);
   }
@@ -255,15 +251,6 @@ const distanceToRectangle = (
     GAPoint.distanceToLine(pointRel, GALine.equation(0, 1, -hheight)),
     GAPoint.distanceToLine(pointRel, GALine.equation(1, 0, -hwidth)),
   );
-};
-
-const distanceToDiamond = (
-  element: ExcalidrawDiamondElement,
-  point: Point,
-): number => {
-  const [, pointRel, hwidth, hheight] = pointRelativeToElement(element, point);
-  const side = GALine.equation(hheight, hwidth, -hheight * hwidth);
-  return GAPoint.distanceToLine(pointRel, side);
 };
 
 const distanceToEllipse = (
@@ -531,8 +518,6 @@ export const determineFocusDistance = (
     case "image":
     case "text":
       return c / (hwidth * (nabs + q * mabs));
-    case "diamond":
-      return mabs < nabs ? c / (nabs * hwidth) : c / (mabs * hheight);
     case "ellipse":
       return c / (hwidth * Math.sqrt(n ** 2 + q ** 2 * m ** 2));
   }
@@ -561,7 +546,6 @@ export const determineFocusPoint = (
     case "rectangle":
     case "image":
     case "text":
-    case "diamond":
       point = findFocusPointForRectangulars(element, focus, adjecentPointRel);
       break;
     case "ellipse":
@@ -611,7 +595,6 @@ const getSortedElementLineIntersections = (
     case "rectangle":
     case "image":
     case "text":
-    case "diamond":
       const corners = getCorners(element);
       intersections = corners
         .flatMap((point, i) => {
@@ -644,7 +627,6 @@ const getCorners = (
   element:
     | ExcalidrawRectangleElement
     | ExcalidrawImageElement
-    | ExcalidrawDiamondElement
     | ExcalidrawTextElement,
   scale: number = 1,
 ): GA.Point[] => {
@@ -659,13 +641,6 @@ const getCorners = (
         GA.point(hx, -hy),
         GA.point(-hx, -hy),
         GA.point(-hx, hy),
-      ];
-    case "diamond":
-      return [
-        GA.point(0, hy),
-        GA.point(hx, 0),
-        GA.point(0, -hy),
-        GA.point(-hx, 0),
       ];
   }
 };
@@ -795,7 +770,6 @@ export const findFocusPointForRectangulars = (
   element:
     | ExcalidrawRectangleElement
     | ExcalidrawImageElement
-    | ExcalidrawDiamondElement
     | ExcalidrawTextElement,
   // Between -1 and 1 for how far away should the focus point be relative
   // to the size of the element. Sign determines orientation.

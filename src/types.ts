@@ -164,8 +164,8 @@ export type AppState = {
     | "backgroundColorPicker"
     | "strokeColorPicker"
     | null;
-  openSidebar: "library" | "customSidebar" | null;
-  openDialog: "imageExport" | "help" | "jsonExport" | null;
+  openSidebar: "library" | "customSidebar" | "customBottombar" | null;
+  openDialog: "imageExport" | "help" | "jsonExport" | "custom" | null;
   isSidebarDocked: boolean;
 
   lastPointerDownWith: PointerType;
@@ -301,7 +301,7 @@ export interface ExcalidrawProps {
     data: ClipboardData,
     event: ClipboardEvent | null,
   ) => Promise<boolean> | boolean;
-  renderTopRightUI?: (
+  renderTopLeftUI?: (
     isMobile: boolean,
     appState: AppState,
   ) => JSX.Element | null;
@@ -338,6 +338,8 @@ export interface ExcalidrawProps {
    * Render function that renders custom <Sidebar /> component.
    */
   renderSidebar?: () => JSX.Element | null;
+  renderBottombar?: () => JSX.Element | null;
+  renderCustomDialog?: { title: string; content: () => JSX.Element | null };
   children?: React.ReactNode;
 }
 

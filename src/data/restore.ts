@@ -47,7 +47,6 @@ export const AllowedExcalidrawActiveTools: Record<
   selection: true,
   text: true,
   rectangle: true,
-  diamond: true,
   ellipse: true,
   line: true,
   image: true,
@@ -240,8 +239,6 @@ const restoreElement = (
     case "ellipse":
       return restoreElementWithProperties(element, {});
     case "rectangle":
-      return restoreElementWithProperties(element, {});
-    case "diamond":
       return restoreElementWithProperties(element, {});
 
     // Don't use default case so as to catch a missing an element type case.

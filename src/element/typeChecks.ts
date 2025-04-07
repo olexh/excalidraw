@@ -1,16 +1,16 @@
-import { ROUNDNESS } from "../constants";
-import { AppState } from "../types";
+import {ROUNDNESS} from "../constants";
+import {AppState} from "../types";
 import {
-  ExcalidrawElement,
-  ExcalidrawTextElement,
-  ExcalidrawLinearElement,
   ExcalidrawBindableElement,
-  ExcalidrawGenericElement,
+  ExcalidrawElement,
   ExcalidrawFreeDrawElement,
-  InitializedExcalidrawImageElement,
+  ExcalidrawGenericElement,
   ExcalidrawImageElement,
-  ExcalidrawTextElementWithContainer,
+  ExcalidrawLinearElement,
   ExcalidrawTextContainer,
+  ExcalidrawTextElement,
+  ExcalidrawTextElementWithContainer,
+  InitializedExcalidrawImageElement,
   RoundnessType,
 } from "./types";
 
@@ -21,7 +21,6 @@ export const isGenericElement = (
     element != null &&
     (element.type === "selection" ||
       element.type === "rectangle" ||
-      element.type === "diamond" ||
       element.type === "ellipse")
   );
 };
@@ -101,7 +100,6 @@ export const isBindableElement = (
     element != null &&
     (!element.locked || includeLocked === true) &&
     (element.type === "rectangle" ||
-      element.type === "diamond" ||
       element.type === "ellipse" ||
       element.type === "image" ||
       (element.type === "text" && !element.containerId))
@@ -116,7 +114,6 @@ export const isTextBindableContainer = (
     element != null &&
     (!element.locked || includeLocked === true) &&
     (element.type === "rectangle" ||
-      element.type === "diamond" ||
       element.type === "ellipse" ||
       element.type === "image" ||
       isArrowElement(element))
@@ -140,7 +137,7 @@ export const hasBoundTextElement = (
 ): element is MarkNonNullable<ExcalidrawBindableElement, "boundElements"> => {
   return (
     isBindableElement(element) &&
-    !!element.boundElements?.some(({ type }) => type === "text")
+    !!element.boundElements?.some(({type}) => type === "text")
   );
 };
 
@@ -188,8 +185,7 @@ export const getDefaultRoundnessTypeForElement = (
 ) => {
   if (
     element.type === "arrow" ||
-    element.type === "line" ||
-    element.type === "diamond"
+    element.type === "line"
   ) {
     return {
       type: ROUNDNESS.PROPORTIONAL_RADIUS,

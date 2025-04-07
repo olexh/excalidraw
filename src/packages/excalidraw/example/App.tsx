@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import ExampleSidebar from "./sidebar/ExampleSidebar";
 
@@ -13,7 +13,7 @@ import {
   withBatchedUpdates,
   withBatchedUpdatesThrottled,
 } from "../../../utils";
-import { EVENT, ROUNDNESS } from "../../../constants";
+import { EVENT } from "../../../constants";
 import { distance2d } from "../../../math";
 import { fileOpen } from "../../../data/filesystem";
 import { loadSceneOrLibraryFromBlob } from "../../utils";
@@ -23,7 +23,6 @@ import {
   ExcalidrawImperativeAPI,
   ExcalidrawInitialDataState,
   Gesture,
-  LibraryItems,
   PointerDownState as ExcalidrawPointerDownState,
 } from "../../../types";
 import { NonDeletedExcalidrawElement } from "../../../element/types";
@@ -119,34 +118,10 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
 
   useEffect(() => {
     if (!excalidrawAPI) {
-      return;
     }
-    const fetchData = async () => {
-      const res = await fetch("/images/rocket.jpeg");
-      const imageData = await res.blob();
-      const reader = new FileReader();
-      reader.readAsDataURL(imageData);
-
-      reader.onload = function () {
-        const imagesArray: BinaryFileData[] = [
-          {
-            id: "rocket" as BinaryFileData["id"],
-            dataURL: reader.result as BinaryFileData["dataURL"],
-            mimeType: MIME_TYPES.jpg,
-            created: 1644915140367,
-            lastRetrieved: 1644915140367,
-          },
-        ];
-
-        //@ts-ignore
-        initialStatePromiseRef.current.promise.resolve(initialData);
-        excalidrawAPI.addFiles(imagesArray);
-      };
-    };
-    fetchData();
   }, [excalidrawAPI]);
 
-  const renderTopRightUI = (isMobile: boolean) => {
+  const renderTopLeftUI = (isMobile: boolean) => {
     return (
       <>
         {!isMobile && (
@@ -181,47 +156,69 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
     }
   };
 
-  const updateScene = () => {
-    const sceneData = {
-      elements: restoreElements(
-        [
-          {
-            type: "rectangle",
-            version: 141,
-            versionNonce: 361174001,
-            isDeleted: false,
-            id: "oDVXy8D6rom3H1-LLH2-f",
-            fillStyle: "hachure",
-            strokeWidth: 1,
-            strokeStyle: "solid",
-            roughness: 1,
-            opacity: 100,
-            angle: 0,
-            x: 100.50390625,
-            y: 93.67578125,
-            strokeColor: "#c92a2a",
-            backgroundColor: "transparent",
-            width: 186.47265625,
-            height: 141.9765625,
-            seed: 1968410350,
-            groupIds: [],
-            boundElements: null,
-            locked: false,
-            link: null,
-            updated: 1,
-            roundness: {
-              type: ROUNDNESS.ADAPTIVE_RADIUS,
-              value: 32,
+  const updateScene = async () => {
+    const res = await fetch("https://i.imgur.com/oH0rXro.jpeg");
+    const imageData = await res.blob();
+    const reader = URL.createObjectURL(imageData);
+    const image = new Image();
+    image.src = reader;
+
+    image.onload = function () {
+      const imagesArray: BinaryFileData[] = [
+        {
+          id: "background" as BinaryFileData["id"],
+          dataURL: reader as BinaryFileData["dataURL"],
+          mimeType: MIME_TYPES.jpg,
+          created: Date.now() * 1000,
+          lastRetrieved: Date.now() * 1000,
+        },
+      ];
+
+      excalidrawAPI!.addFiles(imagesArray);
+
+      const sceneData = {
+        elements: restoreElements(
+          [
+            {
+              type: "image",
+              version: 185,
+              versionNonce: 1761920132,
+              isDeleted: false,
+              id: "background",
+              fillStyle: "hachure",
+              strokeWidth: 1,
+              strokeStyle: "solid",
+              roughness: 1,
+              opacity: 100,
+              angle: 0,
+              x: window.innerWidth / 2 - image.width / 2,
+              y: 150,
+              strokeColor: "transparent",
+              backgroundColor: "transparent",
+              width: image.width,
+              height: image.height,
+              seed: 707269846,
+              groupIds: [],
+              roundness: {
+                type: 2,
+              },
+              boundElements: [],
+              updated: 1677092245612,
+              link: null,
+              locked: true,
+              status: "pending",
+              fileId: "background" as BinaryFileData["id"],
+              scale: [1, 1],
             },
-          },
-        ],
-        null,
-      ),
-      appState: {
-        viewBackgroundColor: "#edf2ff",
-      },
+          ],
+          null,
+        ),
+        appState: {
+          viewBackgroundColor: "#edf2ff",
+        },
+      };
+      excalidrawAPI?.updateScene(sceneData);
     };
-    excalidrawAPI?.updateScene(sceneData);
   };
 
   const onLinkOpen = useCallback(
@@ -496,9 +493,18 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
 
   const renderSidebar = () => {
     return (
-      <Sidebar>
+      <Sidebar dockable={false}>
         <Sidebar.Header>Custom header!</Sidebar.Header>
         Custom sidebar!
+      </Sidebar>
+    );
+  };
+
+  const renderBottombar = () => {
+    return (
+      <Sidebar placement="bottom" dockable={false}>
+        <Sidebar.Header>Custom bottom!</Sidebar.Header>
+        Custom bottombar!
       </Sidebar>
     );
   };
@@ -548,29 +554,6 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
           >
             Reset Scene
           </button>
-          <button
-            onClick={() => {
-              const libraryItems: LibraryItems = [
-                {
-                  status: "published",
-                  id: "1",
-                  created: 1,
-                  elements: initialData.libraryItems[1] as any,
-                },
-                {
-                  status: "unpublished",
-                  id: "2",
-                  created: 2,
-                  elements: initialData.libraryItems[1] as any,
-                },
-              ];
-              excalidrawAPI?.updateLibrary({
-                libraryItems,
-              });
-            }}
-          >
-            Update Library
-          </button>
 
           <label>
             <input
@@ -609,40 +592,6 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
               }}
             />
             Switch to Dark Theme
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={isCollaborating}
-              onChange={() => {
-                if (!isCollaborating) {
-                  const collaborators = new Map();
-                  collaborators.set("id1", {
-                    username: "Doremon",
-                    avatarUrl: "images/doremon.png",
-                  });
-                  collaborators.set("id2", {
-                    username: "Excalibot",
-                    avatarUrl: "images/excalibot.png",
-                  });
-                  collaborators.set("id3", {
-                    username: "Pika",
-                    avatarUrl: "images/pika.jpeg",
-                  });
-                  collaborators.set("id4", {
-                    username: "fallback",
-                    avatarUrl: "https://example.com",
-                  });
-                  excalidrawAPI?.updateScene({ collaborators });
-                } else {
-                  excalidrawAPI?.updateScene({
-                    collaborators: new Map(),
-                  });
-                }
-                setIsCollaborating(!isCollaborating);
-              }}
-            />
-            Show collaborators
           </label>
           <div>
             <button onClick={onCopy.bind(null, "png")}>
@@ -687,7 +636,6 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
           </div>
           <Excalidraw
             ref={(api: ExcalidrawImperativeAPI) => setExcalidrawAPI(api)}
-            initialData={initialStatePromiseRef.current.promise}
             onChange={(elements, state) => {
               console.info("Elements :", elements, "State : ", state);
             }}
@@ -702,11 +650,21 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
             theme={theme}
             name="Custom name of drawing"
             UIOptions={{ canvasActions: { loadScene: false } }}
-            renderTopRightUI={renderTopRightUI}
             onLinkOpen={onLinkOpen}
             onPointerDown={onPointerDown}
             onScrollChange={rerenderCommentIcons}
             renderSidebar={renderSidebar}
+            renderBottombar={renderBottombar}
+            renderTopLeftUI={renderTopLeftUI}
+            renderCustomDialog={{
+              title: "test",
+              content: () => <div>test</div>,
+            }}
+            initialData={{
+              appState: {
+                openDialog: "custom",
+              },
+            }}
           >
             {excalidrawAPI && (
               <Footer>
@@ -714,7 +672,7 @@ export default function App({ appTitle, useCustom, customArgs }: AppProps) {
               </Footer>
             )}
             <WelcomeScreen />
-            {renderMenu()}
+            {/*{renderMenu()}*/}
           </Excalidraw>
           {Object.keys(commentIcons || []).length > 0 && renderCommentIcons()}
           {comment && renderComment()}

@@ -12,6 +12,8 @@ import {
 } from "./components/icons";
 import { KEYS } from "./keys";
 
+export const ACCESSABLE = ["selection", "freedraw", "text", "image", "eraser"];
+
 export const SHAPES = [
   {
     icon: SelectionIcon,
@@ -24,63 +26,56 @@ export const SHAPES = [
     icon: RectangleIcon,
     value: "rectangle",
     key: KEYS.R,
-    numericKey: KEYS["2"],
-    fillable: true,
-  },
-  {
-    icon: DiamondIcon,
-    value: "diamond",
-    key: KEYS.D,
-    numericKey: KEYS["3"],
+    numericKey: KEYS["6"],
     fillable: true,
   },
   {
     icon: EllipseIcon,
     value: "ellipse",
     key: KEYS.O,
-    numericKey: KEYS["4"],
+    numericKey: KEYS["7"],
     fillable: true,
   },
   {
     icon: ArrowIcon,
     value: "arrow",
     key: KEYS.A,
-    numericKey: KEYS["5"],
+    numericKey: KEYS["8"],
     fillable: true,
   },
   {
     icon: LineIcon,
     value: "line",
     key: KEYS.L,
-    numericKey: KEYS["6"],
+    numericKey: KEYS["9"],
     fillable: true,
   },
   {
     icon: FreedrawIcon,
     value: "freedraw",
     key: [KEYS.P, KEYS.X],
-    numericKey: KEYS["7"],
-    fillable: false,
-  },
-  {
-    icon: TextIcon,
-    value: "text",
-    key: KEYS.T,
-    numericKey: KEYS["8"],
-    fillable: false,
-  },
-  {
-    icon: ImageIcon,
-    value: "image",
-    key: null,
-    numericKey: KEYS["9"],
+    numericKey: KEYS["2"],
     fillable: false,
   },
   {
     icon: EraserIcon,
     value: "eraser",
     key: KEYS.E,
-    numericKey: KEYS["0"],
+    numericKey: KEYS["3"],
+    fillable: false,
+  },
+  {
+    icon: TextIcon,
+    value: "text",
+    key: KEYS.T,
+    numericKey: KEYS["4"],
+    fillable: false,
+  },
+  {
+    icon: ImageIcon,
+    value: "image",
+    key: null,
+    numericKey: KEYS["5"],
     fillable: false,
   },
 ] as const;

@@ -475,17 +475,7 @@ export const getElementBounds = (
     ];
   } else if (isLinearElement(element)) {
     bounds = getLinearElementRotatedBounds(element, cx, cy);
-  } else if (element.type === "diamond") {
-    const [x11, y11] = rotate(cx, y1, cx, cy, element.angle);
-    const [x12, y12] = rotate(cx, y2, cx, cy, element.angle);
-    const [x22, y22] = rotate(x1, cy, cx, cy, element.angle);
-    const [x21, y21] = rotate(x2, cy, cx, cy, element.angle);
-    const minX = Math.min(x11, x12, x22, x21);
-    const minY = Math.min(y11, y12, y22, y21);
-    const maxX = Math.max(x11, x12, x22, x21);
-    const maxY = Math.max(y11, y12, y22, y21);
-    bounds = [minX, minY, maxX, maxY];
-  } else if (element.type === "ellipse") {
+  }  else if (element.type === "ellipse") {
     const w = (x2 - x1) / 2;
     const h = (y2 - y1) / 2;
     const cos = Math.cos(element.angle);
@@ -510,8 +500,9 @@ export const getElementBounds = (
 
 export const getCommonBounds = (
   elements: readonly ExcalidrawElement[],
+  elementBounds?: ExcalidrawElement,
 ): [number, number, number, number] => {
-  if (!elements.length) {
+  if (!elements.length && !elementBounds) {
     return [0, 0, 0, 0];
   }
 
@@ -520,13 +511,21 @@ export const getCommonBounds = (
   let minY = Infinity;
   let maxY = -Infinity;
 
-  elements.forEach((element) => {
-    const [x1, y1, x2, y2] = getElementBounds(element);
+  if (elementBounds) {
+    const [x1, y1, x2, y2] = getElementBounds(elementBounds);
     minX = Math.min(minX, x1);
     minY = Math.min(minY, y1);
     maxX = Math.max(maxX, x2);
     maxY = Math.max(maxY, y2);
-  });
+  } else {
+    elements.forEach((element) => {
+      const [x1, y1, x2, y2] = getElementBounds(element);
+      minX = Math.min(minX, x1);
+      minY = Math.min(minY, y1);
+      maxX = Math.max(maxX, x2);
+      maxY = Math.max(maxY, y2);
+    });
+  }
 
   return [minX, minY, maxX, maxY];
 };

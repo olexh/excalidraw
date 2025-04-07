@@ -208,7 +208,6 @@ const drawElementOnCanvas = (
   context.globalAlpha = element.opacity / 100;
   switch (element.type) {
     case "rectangle":
-    case "diamond":
     case "ellipse": {
       context.lineJoin = "round";
       context.lineCap = "round";
@@ -375,7 +374,6 @@ export const generateRoughOptions = (
 
   switch (element.type) {
     case "rectangle":
-    case "diamond":
     case "ellipse": {
       options.fillStyle = element.fillStyle;
       options.fill =
@@ -448,56 +446,6 @@ const generateElementShape = (
         setShapeForElement(element, shape);
 
         break;
-      case "diamond": {
-        const [topX, topY, rightX, rightY, bottomX, bottomY, leftX, leftY] =
-          getDiamondPoints(element);
-        if (element.roundness) {
-          const verticalRadius = getCornerRadius(
-            Math.abs(topX - leftX),
-            element,
-          );
-
-          const horizontalRadius = getCornerRadius(
-            Math.abs(rightY - topY),
-            element,
-          );
-
-          shape = generator.path(
-            `M ${topX + verticalRadius} ${topY + horizontalRadius} L ${
-              rightX - verticalRadius
-            } ${rightY - horizontalRadius}
-            C ${rightX} ${rightY}, ${rightX} ${rightY}, ${
-              rightX - verticalRadius
-            } ${rightY + horizontalRadius}
-            L ${bottomX + verticalRadius} ${bottomY - horizontalRadius}
-            C ${bottomX} ${bottomY}, ${bottomX} ${bottomY}, ${
-              bottomX - verticalRadius
-            } ${bottomY - horizontalRadius}
-            L ${leftX + verticalRadius} ${leftY + horizontalRadius}
-            C ${leftX} ${leftY}, ${leftX} ${leftY}, ${leftX + verticalRadius} ${
-              leftY - horizontalRadius
-            }
-            L ${topX - verticalRadius} ${topY + horizontalRadius}
-            C ${topX} ${topY}, ${topX} ${topY}, ${topX + verticalRadius} ${
-              topY + horizontalRadius
-            }`,
-            generateRoughOptions(element, true),
-          );
-        } else {
-          shape = generator.polygon(
-            [
-              [topX, topY],
-              [rightX, rightY],
-              [bottomX, bottomY],
-              [leftX, leftY],
-            ],
-            generateRoughOptions(element),
-          );
-        }
-        setShapeForElement(element, shape);
-
-        break;
-      }
       case "ellipse":
         shape = generator.ellipse(
           element.width / 2,
@@ -879,7 +827,6 @@ export const renderElement = (
       break;
     }
     case "rectangle":
-    case "diamond":
     case "ellipse":
     case "line":
     case "arrow":
@@ -1090,7 +1037,6 @@ export const renderElementToSvg = (
       throw new Error("Selection rendering is not supported for SVG");
     }
     case "rectangle":
-    case "diamond":
     case "ellipse": {
       generateElementShape(element, generator);
       const node = roughSVGDrawWithPrecision(
