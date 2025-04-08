@@ -66,6 +66,10 @@ type _ExcalidrawElementBase = Readonly<{
   customData?: Record<string, any>;
 }>;
 
+export type ExcalidrawDiamondElement = _ExcalidrawElementBase & {
+  type: "diamond";
+};
+
 export type ExcalidrawSelectionElement = _ExcalidrawElementBase & {
   type: "selection";
 };
@@ -111,7 +115,8 @@ export type ExcalidrawElement =
   | ExcalidrawTextElement
   | ExcalidrawLinearElement
   | ExcalidrawFreeDrawElement
-  | ExcalidrawImageElement;
+  | ExcalidrawImageElement
+  | ExcalidrawDiamondElement;
 
 export type NonDeleted<TElement extends ExcalidrawElement> = TElement & {
   isDeleted: boolean;
