@@ -39,8 +39,8 @@ To use it in a browser directly:
 ```html
 <script src="https://unpkg.com/@excalidraw/utils@0.1.0/dist/excalidraw-utils.min.js"></script>
 <script>
-  // ExcalidrawUtils is a global variable defined by excalidraw.min.js
-  const { exportToSvg, exportToBlob } = ExcalidrawUtils;
+    // ExcalidrawUtils is a global variable defined by excalidraw.min.js
+    const { exportToSvg, exportToBlob } = ExcalidrawUtils;
 </script>
 ```
 
@@ -48,38 +48,38 @@ Here's the `exportToBlob` and `exportToSvg` functions in action:
 
 ```js
 const excalidrawDiagram = {
-  type: "excalidraw",
-  version: 2,
-  source: "https://excalidraw.com",
-  elements: [
-    {
-      id: "vWrqOAfkind2qcm7LDAGZ",
-      type: "ellipse",
-      x: 414,
-      y: 237,
-      width: 214,
-      height: 214,
-      angle: 0,
-      strokeColor: "#000000",
-      backgroundColor: "#15aabf",
-      fillStyle: "hachure",
-      strokeWidth: 1,
-      strokeStyle: "solid",
-      roughness: 1,
-      opacity: 100,
-      groupIds: [],
-      roundness: null,
-      seed: 1041657908,
-      version: 120,
-      versionNonce: 1188004276,
-      isDeleted: false,
-      boundElementIds: null,
+    type: "excalidraw",
+    version: 2,
+    source: "https://excalidraw.com",
+    elements: [
+        {
+            id: "vWrqOAfkind2qcm7LDAGZ",
+            type: "ellipse",
+            x: 414,
+            y: 237,
+            width: 214,
+            height: 214,
+            angle: 0,
+            strokeColor: "#000000",
+            backgroundColor: "#15aabf",
+            fillStyle: "hachure",
+            strokeWidth: 1,
+            strokeStyle: "solid",
+            roughness: 1,
+            opacity: 100,
+            groupIds: [],
+            roundness: null,
+            seed: 1041657908,
+            version: 120,
+            versionNonce: 1188004276,
+            isDeleted: false,
+            boundElementIds: null,
+        },
+    ],
+    appState: {
+        viewBackgroundColor: "#ffffff",
+        gridSize: null,
     },
-  ],
-  appState: {
-    viewBackgroundColor: "#ffffff",
-    gridSize: null,
-  },
 };
 
 // Export the Excalidraw diagram as SVG string
@@ -88,12 +88,12 @@ console.log(svg.outerHTML);
 
 // Export the Excalidraw diagram as PNG Blob URL
 (async () => {
-  const blob = await exportToBlob({
-    ...excalidrawDiagram,
-    mimeType: "image/png",
-  });
+    const blob = await exportToBlob({
+        ...excalidrawDiagram,
+        mimeType: "image/png",
+    });
 
-  const urlCreator = window.URL || window.webkitURL;
-  console.log(urlCreator.createObjectURL(blob));
+    const urlCreator = window.URL || window.webkitURL;
+    console.log(urlCreator.createObjectURL(blob));
 })();
 ```
