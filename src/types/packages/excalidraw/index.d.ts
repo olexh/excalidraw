@@ -11,7 +11,7 @@ export declare const Excalidraw: React.MemoExoticComponent<React.ForwardRefExoti
 export { getSceneVersion, isInvisiblySmallElement, getNonDeletedElements, } from "../../element";
 export { defaultLang, useI18n, languages } from "../../i18n";
 export { restore, restoreAppState, restoreElements, restoreLibraryItems, } from "../../data/restore";
-export { exportToCanvas, exportToBlob, exportToSvg, serializeAsJSON, serializeLibraryAsJSON, loadLibraryFromBlob, loadFromBlob, loadSceneOrLibraryFromBlob, getFreeDrawSvgPath, exportToClipboard, mergeLibraryItems, } from "../../packages/utils";
+export { exportToCanvas, exportToBlob, exportToSvg, serializeAsJSON, serializeLibraryAsJSON, loadLibraryFromBlob, loadFromBlob, loadSceneOrLibraryFromBlob, getFreeDrawSvgPath, exportToClipboard, mergeLibraryItems, } from "../utils";
 export { isLinearElement } from "../../element/typeChecks";
 export { FONT_FAMILY, THEME, MIME_TYPES } from "../../constants";
 export { mutateElement, newElementWith, bumpVersion, } from "../../element/mutateElement";
