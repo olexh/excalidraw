@@ -1,0 +1,33 @@
+import React from "react";
+import { AppState, Device, ExcalidrawProps } from "../types";
+import { ActionManager } from "../actions/manager";
+import { NonDeletedExcalidrawElement } from "../element/types";
+declare type MobileMenuProps = {
+    appState: AppState;
+    actionManager: ActionManager;
+    renderLibrary?: boolean;
+    onInsertElements: (elements: readonly NonDeletedExcalidrawElement[]) => void;
+    renderSelectedShapeActions: () => React.ReactNode;
+    renderJSONExportDialog: () => React.ReactNode;
+    renderImageExportDialog: () => React.ReactNode;
+    renderCustomDialog: () => React.ReactNode | null;
+    setAppState: React.Component<any, AppState>["setState"];
+    elements: readonly NonDeletedExcalidrawElement[];
+    onLockToggle: () => void;
+    onHandToolToggle: () => void;
+    onPenModeToggle: () => void;
+    canvas: HTMLCanvasElement | null;
+    renderCustomSidebar?: ExcalidrawProps["renderSidebar"];
+    toggleMenu: (type: "library" | "customSidebar" | "customBottombar", force?: boolean) => boolean;
+    onImageAction: (data: {
+        insertOnCanvasDirectly: boolean;
+    }) => void;
+    renderTopLeftUI?: (isMobile: boolean, appState: AppState) => JSX.Element | null;
+    renderCustomStats?: ExcalidrawProps["renderCustomStats"];
+    renderSidebars: () => JSX.Element | null;
+    device: Device;
+    renderWelcomeScreen: boolean;
+    showExitZenModeBtn: boolean;
+};
+export declare const MobileMenu: ({ appState, elements, actionManager, setAppState, onLockToggle, onHandToolToggle, onPenModeToggle, canvas, onImageAction, renderTopLeftUI, renderCustomDialog, renderLibrary, renderCustomStats, renderSidebars, renderCustomSidebar, toggleMenu, device, renderWelcomeScreen, showExitZenModeBtn, renderSelectedShapeActions, onInsertElements, }: MobileMenuProps) => JSX.Element;
+export {};

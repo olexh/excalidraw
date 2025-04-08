@@ -1,0 +1,41 @@
+import React from "react";
+import { ActionManager } from "../actions/manager";
+import { NonDeletedExcalidrawElement } from "../element/types";
+import { Language } from "../i18n";
+import { AppProps, AppState, BinaryFiles, ExcalidrawProps } from "../types";
+import Library from "../data/library";
+import "./LayerUI.scss";
+import "./Toolbar.scss";
+interface LayerUIProps {
+    actionManager: ActionManager;
+    appState: AppState;
+    files: BinaryFiles;
+    canvas: HTMLCanvasElement | null;
+    setAppState: React.Component<any, AppState>["setState"];
+    elements: readonly NonDeletedExcalidrawElement[];
+    onLockToggle: () => void;
+    onHandToolToggle: () => void;
+    onPenModeToggle: () => void;
+    onInsertElements: (elements: readonly NonDeletedExcalidrawElement[]) => void;
+    showExitZenModeBtn: boolean;
+    langCode: Language["code"];
+    renderLibrary?: ExcalidrawProps["renderLibrary"];
+    renderTopLeftUI?: ExcalidrawProps["renderTopLeftUI"];
+    renderCustomStats?: ExcalidrawProps["renderCustomStats"];
+    renderCustomSidebar?: ExcalidrawProps["renderSidebar"];
+    renderCustomBottombar?: ExcalidrawProps["renderBottombar"];
+    renderCustomDialog?: ExcalidrawProps["renderCustomDialog"];
+    libraryReturnUrl: ExcalidrawProps["libraryReturnUrl"];
+    toggleMenu: (type: "library" | "customSidebar" | "customBottombar", force?: boolean) => boolean;
+    UIOptions: AppProps["UIOptions"];
+    focusContainer: () => void;
+    library: Library;
+    id: string;
+    onImageAction: (data: {
+        insertOnCanvasDirectly: boolean;
+    }) => void;
+    renderWelcomeScreen: boolean;
+    children?: React.ReactNode;
+}
+declare const _default: React.MemoExoticComponent<({ actionManager, appState, files, setAppState, elements, canvas, onLockToggle, onHandToolToggle, onPenModeToggle, onInsertElements, showExitZenModeBtn, renderTopLeftUI, renderLibrary, renderCustomStats, renderCustomSidebar, renderCustomBottombar, renderCustomDialog, libraryReturnUrl, UIOptions, focusContainer, library, id, onImageAction, renderWelcomeScreen, toggleMenu, children, }: LayerUIProps) => JSX.Element>;
+export default _default;
